@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3B66A8">
+<link rel="manifest" href="manifest.json?v=8-1">
+<title>MT Pricing V8.1 Clean</title>
+<style>
+:root{
+  --b:#3B66A8;--b2:#2F5B9C;--bd:#14346B;--bg:#F3F6FB;--txt:#101828;
+  --mut:#667085;--g:#128C7E;--r:#C00000;--gold:#E4C16A;
+  --sh:0 16px 38px rgba(16,24,40,.10);--soft:0 8px 22px rgba(16,24,40,.08)
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:radial-gradient(circle at 50% -10%,rgba(59,102,168,.18),transparent 35%),linear-gradient(180deg,#F8FBFF,#EEF3FA);
+  font-family:Arial,"Segoe UI",Tahoma,sans-serif;color:var(--txt);padding-bottom:30px
+}
+.app{max-width:1120px;margin:auto}
+.hero{
+  color:#fff;padding:20px 18px 32px;border-bottom-left-radius:42px;border-bottom-right-radius:42px;
+  background:radial-gradient(circle at 88% -18%,rgba(255,255,255,.18) 0 27%,transparent 28%),linear-gradient(145deg,var(--b),var(--b2) 48%,var(--bd));
+  box-shadow:0 26px 55px rgba(33,71,132,.28)
+}
+.topbar{display:flex;justify-content:space-between;align-items:center}
+.topRight{display:flex;gap:8px;align-items:center}
+.iconBtn{width:46px;height:46px;display:grid;place-items:center;border-radius:16px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);font-size:22px}
+.langToggle{display:flex;gap:6px;background:rgba(255,255,255,.12);padding:4px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
+.langToggle button{background:transparent;padding:9px 14px;border:0;border-radius:999px;color:#fff;font-weight:950;cursor:pointer}
+.langToggle .active{background:#fff;color:var(--bd)}
+.logoWrap{text-align:center}
+.logoText{font-size:82px;font-weight:950;letter-spacing:-4px;line-height:1}
+.logoSub{font-size:24px;opacity:.92;margin-top:-4px}
+.tagline{font-size:27px;font-weight:950;margin-top:12px}
+.subtag{font-size:14px;opacity:.92;margin-top:7px}
+.heroStats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:12px;text-align:center;font-size:12px;font-weight:800}
+.stat strong{font-size:18px;display:block}
+.content{padding:18px 14px}
+.notice{display:flex;gap:12px;background:#fff;border:1px solid #E9C16A;color:#7A4B00;border-radius:20px;padding:14px;font-size:13px;margin-bottom:14px;font-weight:800;box-shadow:var(--soft)}
+.noticeIcon{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#FFF3D4;flex:0 0 32px}
+.mode{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.mode button{background:#fff;color:var(--bd);border:1.5px solid #D7E1EF}
+.mode button.active{background:linear-gradient(145deg,var(--b),var(--bd));color:#fff;border:0}
+.adminBar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.adminBadge{background:#111827;color:#fff;border-radius:999px;padding:10px 14px;font-size:13px;font-weight:900;display:inline-flex;align-items:center}
+.adminBadge.locked{background:#667085}
+.card{background:rgba(255,255,255,.96);border:1px solid #D7E1EF;border-radius:28px;padding:17px;margin-bottom:15px;box-shadow:var(--soft);backdrop-filter:blur(10px)}
+.sectionTitle{color:var(--bd);font-weight:950;font-size:19px;margin:0 0 5px;text-transform:uppercase}
+.sectionHint{font-size:13px;margin:0 0 14px;color:#344054}
+.productGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}
+.productCard{border:1.5px solid #D7E1EF;border-radius:24px;overflow:hidden;background:#fff;cursor:pointer;box-shadow:0 7px 18px rgba(16,24,40,.06);transition:.22s;position:relative}
+.productCard:hover{transform:translateY(-4px);box-shadow:0 18px 32px rgba(16,24,40,.12)}
+.productCard.active{border-color:var(--b);box-shadow:0 0 0 4px rgba(59,102,168,.14),0 18px 32px rgba(16,24,40,.12)}
+.productCard.active:after{content:"✓";position:absolute;top:10px;right:10px;background:var(--b);color:#fff;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:900}
+.svgBox{width:100%;aspect-ratio:1/0.82;display:block;background:#F3F6FB}
+.pLabel{padding:11px 8px;text-align:center;font-weight:950;color:var(--bd);font-size:13px;min-height:46px;display:grid;place-items:center}
+.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-weight:850;margin:11px 0 6px;font-size:13px}
+select,input{width:100%;border:1.5px solid #C9D3E2;border-radius:16px;padding:13px 14px;font-size:16px;background:#fff;outline:none;min-height:48px}
+select:focus,input:focus{border-color:var(--b);box-shadow:0 0 0 4px rgba(59,102,168,.13)}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.checkLine{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid #E5EAF2;border-radius:16px;padding:13px;margin:9px 0;font-weight:850}
+.checkLine input{width:auto;min-height:auto;transform:scale(1.18)}
+.hidden{display:none!important}
+.autoBox{background:#fff;border:1px dashed #B8C7DA;border-radius:18px;padding:12px;margin-top:12px}
+.autoBox div{margin:5px 0}
+.warning{background:#FFF4E5;color:#7A4B00;border:1px solid #FFD591;border-radius:14px;padding:10px;margin-top:10px;font-size:13px;font-weight:850}
+.visualWrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.visualBox{background:#F8FAFC;border:1px solid #E5EAF2;border-radius:18px;padding:12px;min-height:230px}
+.visualBox h4{margin:0 0 8px;color:#14346B;font-size:14px}
+.priceCard{background:radial-gradient(circle at 92% 10%,rgba(255,255,255,.14),transparent 26%),linear-gradient(145deg,var(--b),var(--b2),var(--bd));color:#fff;border-radius:28px;padding:20px;box-shadow:0 20px 38px rgba(33,71,132,.28);margin-bottom:14px}
+.priceRow{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.calcCircle{width:70px;height:70px;border-radius:50%;background:#fff;color:var(--bd);display:grid;place-items:center;font-size:32px;font-weight:900;flex:0 0 70px}
+.priceTitle{font-size:22px;font-weight:950;margin:0}
+.priceArabic{font-size:15px;margin:4px 0 0}
+.bigPrice{font-size:50px;font-weight:950;line-height:1;text-align:right}
+.bigPrice span{font-size:22px}
+.priceNote{font-size:12px;opacity:.9;margin:10px 0 0}
+.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+button{border:0;border-radius:18px;padding:15px 12px;font-weight:950;font-size:14px;color:#fff;background:var(--bd);box-shadow:0 9px 18px rgba(16,24,40,.12);cursor:pointer;transition:.18s}
+button:hover{transform:translateY(-2px)}
+button.green{background:#128C7E}
+button.blue{background:#3B66A8}
+button.red{background:#C00000}
+.miniBtn{padding:11px 13px;border-radius:14px;font-size:13px}
+.breakdown{background:#fff;border-radius:22px;padding:15px;box-shadow:var(--soft);border:1px solid #E5EAF2;margin-bottom:14px}
+.costLine{display:flex;justify-content:space-between;border-bottom:1px solid #EDF2F7;padding:9px 0;font-size:13px;gap:12px}
+.costLine strong{white-space:nowrap}
+.reportGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.reportCard{background:#F8FAFC;border:1px solid #E5EAF2;border-radius:16px;padding:12px;text-align:center}
+.reportCard strong{display:block;font-size:20px;color:#14346B;margin-top:4px}
+.orderTable{width:100%;border-collapse:collapse;font-size:12px}
+.orderTable th,.orderTable td{border-bottom:1px solid #EDF2F7;padding:8px;text-align:start}
+.orderTable th{color:#14346B;background:#F8FAFC}
+.footerBrand{text-align:center;color:#667085;font-size:12px;padding:8px 0 18px}
+@media(max-width:920px){.productGrid{grid-template-columns:repeat(3,1fr)}.formGrid{grid-template-columns:1fr}}
+@media(max-width:620px){.productGrid{grid-template-columns:repeat(2,1fr)}.actions,.mode,.heroStats,.reportGrid,.visualWrap{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.bigPrice{font-size:38px}.tagline{font-size:20px}.priceRow{align-items:flex-start}.logoText{font-size:64px}}
+
+.ordersToolbar{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.searchInput{max-width:420px}
+.deleteBtn{background:#C00000;color:#fff;border:0;border-radius:10px;padding:7px 10px;font-size:12px;cursor:pointer}
+.clientBox{background:#F8FAFC;border:1px solid #E5EAF2;border-radius:18px;padding:12px;margin-bottom:14px}
+
+.separateFormsBox{background:#F8FAFC;border:1px solid #E5EAF2;border-radius:18px;padding:12px;margin-top:12px}
+.formPartCard{background:#fff;border:1px solid #D7E1EF;border-radius:18px;padding:12px;margin:10px 0;box-shadow:0 4px 12px rgba(16,24,40,.04)}
+.formPartTitle{font-weight:950;color:#14346B;margin-bottom:8px}
+
+#separateFormsBox,#formCalcMode,#formsCount,#formeMargin{display:none!important}
+label[for="formeMargin"]{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <div class="topbar">
+    <div class="iconBtn">☰</div>
+    <div class="topRight">
+      <div class="langToggle"><button id="enBtn" class="active" onclick="setLang('en')">EN</button><button id="arBtn" onclick="setLang('ar')">عربي</button></div>
+      <div class="iconBtn" onclick="notifyInfo()">🔔</div>
+    </div>
+  </div>
+  <div class="logoWrap">
+    <div class="logoText">MT</div>
+    <div class="logoSub">Advertising Agency</div>
+    <div class="tagline" data-i18n="tagline"></div>
+    <div class="subtag" data-i18n="subtag"></div>
+  </div>
+  <div class="heroStats">
+    <div class="stat"><strong>10</strong><span data-i18n="statProducts"></span></div>
+    <div class="stat"><strong>2</strong><span data-i18n="statModes"></span></div>
+    <div class="stat"><strong>Auto</strong><span data-i18n="statDieline"></span></div>
+  </div>
+</header>
+
+<main class="content">
+<div class="notice"><div class="noticeIcon">!</div><div data-i18n="mainNotice"></div></div>
+<div class="mode">
+  <button id="estimateBtn" class="active" onclick="setMode('estimate')" data-i18n="estimateMode"></button>
+  <button id="productionBtn" onclick="setMode('production')" data-i18n="productionMode"></button>
+</div>
+
+<div class="adminBar">
+  <span id="adminBadge" class="adminBadge locked"></span>
+  <button class="miniBtn blue" onclick="toggleAdmin()" id="adminBtn"></button>
+  <button class="miniBtn green" onclick="confirmOrder()" id="confirmBtn"></button>
+  <button class="miniBtn" onclick="toggleReport()" id="reportBtn"></button>
+</div>
+
+<section class="card">
+  <h2 class="sectionTitle" data-i18n="productLibrary"></h2>
+  <p class="sectionHint" data-i18n="productHint"></p>
+  <div class="productGrid" id="productGrid"></div>
+</section>
+
+<section class="card clientBox">
+  <h2 class="sectionTitle" data-i18n="ordersHistory"></h2>
+  <div class="grid3">
+    <div><label data-i18n="clientName"></label><input id="clientName" type="text"></div>
+    <div><label data-i18n="clientPhone"></label><input id="clientPhone" type="text"></div>
+    
+  </div>
+</section>
+
+<div class="formGrid">
+  <section class="card">
+    <h2 class="sectionTitle" data-i18n="setup"></h2>
+    <div id="boxStyleWrap">
+      <label data-i18n="boxStructure"></label>
+      <select id="boxStyle"></select>
+    </div>
+    <div id="dimensionsCard">
+      <label data-i18n="dimensions"></label>
+      <div class="grid3">
+        <div><label data-i18n="length"></label><input id="L" type="number" value="10" step="0.1"></div>
+        <div><label data-i18n="width"></label><input id="W" type="number" value="10" step="0.1"></div>
+        <div><label data-i18n="height"></label><input id="H" type="number" value="3" step="0.1"></div>
+      </div>
+      <div class="autoBox">
+        <div><strong data-i18n="autoDieline"></strong> <span id="autoDieline">—</span></div>
+        <div><strong data-i18n="autoUnits"></strong> <span id="autoUnits">—</span></div>
+        <div id="autoWarning" class="warning hidden"></div>
+      </div>
+      <label class="checkLine"><input type="checkbox" id="useOverride"><span data-i18n="manualOverride"></span></label>
+      <input id="manualUnits" type="number" value="1" min="1">
+      <label data-i18n="dielinePartsMode"></label>
+      <select id="dielinePartsMode"></select>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="sectionTitle" data-i18n="materialPrinting"></h2>
+    <div id="materialCard">
+      <label data-i18n="paperType"></label><select id="paper"></select>
+      <label data-i18n="printingType"></label><select id="print"></select>
+      <label data-i18n="printColors"></label><select id="printColors"></select>
+      <label data-i18n="lamination"></label><select id="lamination"></select>
+    </div>
+    <label data-i18n="quantity"></label><input id="qty" type="number" value="500">
+    <label data-i18n="formCost"></label><input id="formCost" type="number" value="1500">
+    <label data-i18n="transport"></label><input id="transport" type="number" value="1000">
+  </section>
+</div>
+
+<section class="card" id="extrasCard">
+  <h2 class="sectionTitle" data-i18n="extras"></h2>
+  <div id="boxExtras">
+    <label class="checkLine"><input type="checkbox" id="emboss"><span data-i18n="emboss"></span></label>
+    <label class="checkLine"><input type="checkbox" id="spot"><span data-i18n="spot"></span></label>
+    <label class="checkLine"><input type="checkbox" id="windowPlastic"><span data-i18n="windowPlastic"></span></label>
+  </div>
+  <div id="bagExtras">
+    <label data-i18n="handleType"></label><select id="handleType"></select>
+    <label class="checkLine"><input type="checkbox" id="bagGlue" checked><span data-i18n="bagGlue"></span></label>
+  </div>
+  <label data-i18n="specialColors"></label><input type="number" id="specialColors" value="0">
+</section>
+
+<section class="card">
+  <h2 class="sectionTitle" data-i18n="dielinePreview"></h2>
+  <div class="visualWrap">
+    <div class="visualBox"><h4 data-i18n="dielinePreview"></h4><div id="dielineSvg"></div></div>
+    <div class="visualBox"><h4 data-i18n="sheetNesting"></h4><div id="nestingSvg"></div></div>
+  </div>
+</section>
+
+<section class="card" id="ordersCard">
+  <h2 class="sectionTitle" data-i18n="ordersHistory"></h2>
+  <div class="ordersToolbar"><input class="searchInput" id="orderSearch" oninput="renderOrders()" data-i18n-placeholder="searchOrders"></div>
+  <div id="ordersListPublic"></div>
+</section>
+
+<section class="card hidden" id="reportCard">
+  <h2 class="sectionTitle" data-i18n="monthlyReport"></h2>
+  <div class="reportGrid">
+    <div class="reportCard"><span data-i18n="totalRevenue"></span><strong id="repRevenue">0</strong></div>
+    <div class="reportCard"><span data-i18n="totalExpenses"></span><strong id="repExpenses">0</strong></div>
+    <div class="reportCard"><span data-i18n="totalProfit"></span><strong id="repProfit">0</strong></div>
+  </div>
+  <button class="miniBtn red" onclick="clearOrders()" data-i18n="clearOrders"></button>
+  <p class="sectionHint" data-i18n="adminOnlyReport"></p>
+</section>
+
+<section class="priceCard">
+  <div class="priceRow">
+    <div style="display:flex;gap:13px;align-items:center"><div class="calcCircle">🧮</div><div><p class="priceTitle" data-i18n="totalPrice"></p><p class="priceArabic" data-i18n="finalClientPrice"></p></div></div>
+    <div class="bigPrice"><span id="priceNumber">0</span> <span data-i18n="currency"></span></div>
+  </div>
+  <p class="priceNote" id="priceNote">—</p>
+</section>
+
+<section class="actions">
+  <button onclick="copyPrice()" data-i18n="copyPrice"></button>
+  <button class="green" onclick="sendWhatsApp()" data-i18n="sendWhatsApp"></button>
+  <button class="blue" onclick="calculate()" data-i18n="calculate"></button>
+</section>
+
+<section class="breakdown"><h3 data-i18n="breakdown"></h3><div id="breakdownLines"></div></section>
+<div class="footerBrand">MT Advertising Agency · V8.1 Clean Single Form</div>
+</main>
+</div>
+
+<script>
+const SVG={
+onePiece:`<svg class="svgBox" viewBox="0 0 400 330"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3B66A8"/><stop offset="1" stop-color="#14346B"/></linearGradient></defs><rect width="400" height="330" rx="28" fill="#F3F6FB"/><ellipse cx="200" cy="265" rx="115" ry="24" fill="#D7DFEC"/><path d="M120 130 L200 90 L280 130 L200 170Z" fill="#6F92CF"/><path d="M120 130 L200 170 L200 245 L120 205Z" fill="url(#g1)"/><path d="M280 130 L200 170 L200 245 L280 205Z" fill="#214784"/><path d="M120 130 L200 170 L280 130" fill="none" stroke="#fff" stroke-width="5" opacity=".8"/><text x="173" y="206" fill="#fff" font-size="34" font-weight="900" font-family="Arial">MT</text></svg>`,
+baseLid:`<svg class="svgBox" viewBox="0 0 400 330"><rect width="400" height="330" rx="28" fill="#F3F6FB"/><ellipse cx="200" cy="268" rx="120" ry="25" fill="#D7DFEC"/><rect x="95" y="170" width="210" height="72" rx="14" fill="#3B66A8"/><rect x="120" y="102" width="160" height="74" rx="14" fill="#fff" stroke="#14346B" stroke-width="4"/><rect x="130" y="176" width="140" height="12" fill="#D7E1EF"/><text x="167" y="217" fill="#fff" font-size="34" font-weight="900" font-family="Arial">MT</text></svg>`,
+drawer:`<svg class="svgBox" viewBox="0 0 400 330"><rect width="400" height="330" rx="28" fill="#F3F6FB"/><ellipse cx="205" cy="268" rx="135" ry="25" fill="#D7DFEC"/><rect x="70" y="130" width="210" height="105" rx="15" fill="#14346B"/><rect x="150" y="155" width="190" height="110" rx="16" fill="#fff" stroke="#14346B" stroke-width="4"/><rect x="168" y="175" width="150" height="72" rx="12" fill="#3B66A8"/><circle cx="185" cy="212" r="10" fill="#E4C16A"/></svg>`,
+cosmetic:`<svg class="svgBox" viewBox="0 0 400 330"><rect width="400" height="330" rx="28" fill="#F3F6FB"/><ellipse cx="200" cy="268" rx="80" ry="25" fill="#D7DFEC"/><rect x="150" y="62" width="100" height="210" rx="14" fill="#fff" stroke="#14346B" stroke-width="4"/><rect x="150" y="92" width="100" height="42" fill="#3B66A8"/><rect x="150" y="220" width="100" height="36" fill="#3B66A8"/><text x="171" y="175" fill="#3B66A8" font-size="32" font-weight="900" font-family="Arial">MT</text><line x1="172" y1="195" x2="228" y2="195" stroke="#D7E1EF" stroke-width="6"/></svg>`,
+bagCoated:`<svg class="svgBox" viewBox="0 0 400 330"><rect width="400" height="330" rx="28" fill="#F3F6FB"/><ellipse cx="200" cy="270" rx="105" ry="24" fill="#D7DFEC"/><path d="M125 100 H275 L258 260 H142Z" fill="#3B66A8" stroke="#14346B" stroke-width="4"/><path d="M155 100 C155 45 245 45 245 100" fill="none" stroke="#fff" stroke-width="8"/><text x="169" y="190" fill="#fff" font-size="34" font-weight="900" font-family="Arial">MT</text></svg>`,
+bagKraft:`<svg class="svgBox" viewBox="0 0 400 330"><rect width="400" height="330" rx="28" fill="#F3F6FB"/><ellipse cx="200" cy="270" rx="105" ry="24" fill="#D7DFEC"/><path d="M125 100 H275 L258 260 H142Z" fill="#B98245" stroke="#6B3F19" stroke-width="4"/><path d="M155 100 C155 45 245 45 245 100" fill="none" stroke="#F6E1C8" stroke-width="8"/><text x="142" y="190" fill="#4B2E16" font-size="28" font-weight="900" font-family="Arial">KRAFT</text></svg>`,
+sticker:`<svg class="svgBox" viewBox="0 0 400 330"><rect width="400" height="330" rx="28" fill="#F3F6FB"/><rect x="95" y="60" width="210" height="215" rx="20" fill="#fff" stroke="#14346B" stroke-width="4"/><g fill="#3B66A8"><rect x="125" y="92" width="55" height="45" rx="12"/><rect x="205" y="92" width="55" height="45" rx="12"/><rect x="125" y="158" width="55" height="45" rx="12"/><rect x="205" y="158" width="55" height="45" rx="12"/><rect x="125" y="224" width="135" height="28" rx="14"/></g></svg>`,
+card:`<svg class="svgBox" viewBox="0 0 400 330"><rect width="400" height="330" rx="28" fill="#F3F6FB"/><ellipse cx="200" cy="257" rx="125" ry="22" fill="#D7DFEC"/><rect x="80" y="115" width="240" height="120" rx="16" fill="#111827"/><rect x="108" y="145" width="100" height="22" rx="10" fill="#E4C16A"/><rect x="108" y="185" width="165" height="12" rx="6" fill="#6B7280"/><rect x="108" y="210" width="125" height="12" rx="6" fill="#6B7280"/></svg>`,
+butter:`<svg class="svgBox" viewBox="0 0 400 330"><rect width="400" height="330" rx="28" fill="#F3F6FB"/><path d="M80 105 C145 65 230 138 320 95 L290 250 C205 285 145 205 75 255Z" fill="#FFF1B8" stroke="#D6B04A" stroke-width="4"/><path d="M115 130 C165 105 225 160 285 130" fill="none" stroke="#D6B04A" stroke-width="5"/><path d="M105 185 C165 155 215 215 275 185" fill="none" stroke="#D6B04A" stroke-width="5"/><text x="170" y="184" fill="#B08B25" font-size="34" font-weight="900" font-family="Arial">MT</text></svg>`,
+sandwich:`<svg class="svgBox" viewBox="0 0 400 330"><rect width="400" height="330" rx="28" fill="#F3F6FB"/><ellipse cx="200" cy="270" rx="105" ry="24" fill="#D7DFEC"/><rect x="115" y="65" width="170" height="215" fill="#FFF8D8" stroke="#D6B04A" stroke-width="4"/><path d="M115 65 L200 150 L285 65" fill="none" stroke="#D6B04A" stroke-width="6"/><rect x="140" y="185" width="120" height="42" rx="21" fill="#3B66A8"/><text x="173" y="215" fill="#fff" font-size="28" font-weight="900" font-family="Arial">MT</text></svg>`
+};
+
+const I={
+en:{
+tagline:"Start your own packaging Now",subtag:"Full Pro pricing system — fixed complete version",mainNotice:"Estimate Mode uses automatic dieline-family formulas for quick quoting. Production Mode must be used with confirmed units before buying paper.",
+estimateMode:"Estimate Mode",productionMode:"Production Mode",statProducts:"Product types",statModes:"Pricing modes",statDieline:"Dieline estimate",
+productLibrary:"Product Library",productHint:"Choose the product. No external images — clean built-in SVG illustrations.",
+setup:"Setup",formCalcMode:"Form Calculation Method",singleForm:"Single / automatic forme",separateForms:"Separate formes / multiple parts",formsCount:"Number of formes",formPart:"Forme",formPartType:"Forme type",separateFormsHint:"Use this when one finished box is made from multiple formes such as base, cover, insert or dividers.",separateResult:"Separate formes: pricing uses total sheets from all formes.",totalSheets:"Total sheets",unitsPerSheet:"units/sheet",equivalentNote:"Equivalent for costing only",nestingMode:"Smart nesting orientation",normalFit:"Normal",rotatedFit:"Rotated",optimizedFit:"Optimized",boxStructure:"Dieline Family",dimensions:"Dimensions",length:"Length",width:"Width",height:"Height",
+autoDieline:"Auto Dieline:",autoUnits:"Auto result:",manualOverride:"Use confirmed/manual Units per Sheet",
+dielinePartsMode:"Dieline Parts Mode",separateParts:"Separate parts / normal structure",fullSet:"Full set already included in one forme",
+materialPrinting:"Material & Printing",paperType:"Paper Type",printingType:"Printing Type",printColors:"Print Colors",lamination:"Lamination",
+clientName:"Client Name",clientPhone:"Client Phone",formeMargin:"Forme safety margin / side (cm)",quantity:"Quantity",formCost:"Form / Die Cost",transport:"Transport",extras:"Extras",
+emboss:"Emboss — 0.80 per box",spot:"Spot UV — 800 per 1000",windowPlastic:"Plastic Window — 1 per box",
+handleType:"Handle Type",bagGlue:"Bag Glue — 850 per 1000",specialColors:"Special Colors Count",
+totalPrice:"Total Price",finalClientPrice:"Final client price",currency:"EGP",copyPrice:"COPY PRICE",sendWhatsApp:"SEND WHATSAPP",calculate:"CALCULATE",
+breakdown:"Calculation Breakdown",priceCopied:"Price copied",notify:"Notifications need Firebase later",needsReview:"Needs review",
+fitWarn:"⚠️ Size does not fit selected sheet. Manual review required.",prodWarn:"⚠️ Production Mode: confirm dieline/units before buying paper.",
+estimateNote:"Estimate Mode: final production quote requires confirmed dieline.",productionNote:"Production Mode: use confirmed units/dieline only.",
+paperCost:"Paper cost",printingCost:"Printing cost",platesCost:"Plates cost",laminationCost:"Lamination",cuttingCost:"Cutting/creasing",formLine:"Form / Die",extrasLine:"Extras",transportLine:"Transport",profitLine:"Profit",pieceLine:"Price per piece",cardsCost:"Cards cost",specialColorsLine:"Special colors",butterSheets:"Butter paper sheets",
+product:"Product",qty:"Quantity",finalPrice:"The final price is",piecePrice:"Price per piece",clientMsgReady:"If you're ready to proceed, please send us your email address so we can prepare the official contract.",
+adminMode:"Admin Mode",employeeMode:"Employee Mode",unlockAdmin:"Unlock Admin",lockAdmin:"Lock Admin",confirmOrder:"Confirm Order",monthlyReport:"Monthly Report",clearOrders:"Clear All Orders",deleteOrder:"Delete",ordersHistory:"Orders History",searchOrders:"Search orders...",adminOnlyReport:"Monthly report is admin-only.",confirmDeleteOrder:"Delete this order?",dielinePreview:"Dieline Preview",sheetNesting:"Sheet Nesting",orders:"Orders",totalRevenue:"Total Revenue",totalExpenses:"Total Expenses",totalProfit:"Total Profit",orderSaved:"Order saved",adminRequired:"Admin mode required",enterPin:"Enter admin PIN",wrongPin:"Wrong PIN",ordersCleared:"Orders cleared",noOrders:"No orders yet",costLineHidden:"Cost details hidden in employee mode",
+products:{onePiece:"One Piece Box",baseLid:"Base & Lid",drawer:"Drawer Box",cosmetic:"Cosmetic / Medicine",bagCoated:"Coated Bag",bagKraft:"Kraft Bag",sticker:"Sticker Sheet",card:"Cards",butter:"Butter Paper",sandwich:"Sandwich Bag"},
+boxStyles:{onePieceSingle:"One Piece — Single Wall",onePieceDouble:"One Piece — Double Wall",onePiece:"One Piece / Mailer Style",baseLidNoWall:"Base & Lid — No Inner Wall",baseLidWall:"Base & Lid — With Inner Wall",drawer:"Drawer / Sleeve Box",cosmeticTuck:"Straight / Reverse Tuck End",cosmeticLock:"Auto Lock Bottom",tray:"Tray Box",pillow:"Pillow Box"},
+papers:{whiteTop:"White Top 350g",finnish:"Finnish 350g",flandy:"Flandy Gayer",kraft:"Kraft Brown",coatedBag:"Coated Bag 200g",sticker:"Sticker Sheet 100×70",butter:"Butter Paper Sheet 60×80"},
+prints:{quarter:"Quarter",half:"Half",full:"Full"},lams:{yes:"Matte / Glossy — 3.5",no:"No Lamination"},handles:{no:"No Handle",kraft:"Kraft Handle — 1",rope:"Rope Handle — 2.5"},formTypes:{base:"Base",cover:"Cover",insert:"Insert",divider:"Divider",sleeve:"Sleeve / Drawer"}
+},
+ar:{
+tagline:"ابدأ باكيدجنج براندك دلوقتي",subtag:"سيستم تسعير كامل احترافي — نسخة ثابتة ومظبوطة",mainNotice:"وضع التسعير المبدئي يستخدم معادلات تقديرية حسب عائلة الفورمة. وضع الإنتاج لازم يتستخدم بعد تأكيد عدد القطع قبل شراء الورق.",
+estimateMode:"تسعير مبدئي",productionMode:"وضع الإنتاج",statProducts:"أنواع منتجات",statModes:"أوضاع تسعير",statDieline:"تقدير الفرد",
+productLibrary:"مكتبة المنتجات",productHint:"اختر المنتج. لا توجد صور خارجية — رسومات SVG مدمجة داخل الكود.",
+setup:"الإعدادات",formCalcMode:"طريقة احتساب الفورمة",singleForm:"فورمة واحدة / أوتوماتيك",separateForms:"أجزاء منفصلة / أكثر من فورمة",formsCount:"عدد الفورم",formPart:"فورمة",formPartType:"نوع الفورمة",separateFormsHint:"استخدمها لما العلبة الواحدة تتكون من أكثر من فورمة مثل قاعدة، غطاء، إنسيرت أو فواصل.",separateResult:"فورم منفصلة: التسعير يعتمد على إجمالي الشيتات لكل الفورم.",totalSheets:"إجمالي الشيتات",unitsPerSheet:"قطعة/فرخ",equivalentNote:"رقم مكافئ للتكلفة فقط",nestingMode:"اتجاه المونتاج الذكي",normalFit:"عادي",rotatedFit:"تدوير",optimizedFit:"الأفضل",boxStructure:"عائلة الفورمة",dimensions:"المقاسات",length:"الطول",width:"العرض",height:"الارتفاع",
+autoDieline:"الفرد التقديري:",autoUnits:"نتيجة الحساب:",manualOverride:"استخدم عدد مؤكد/يدوي في الفرخ",
+dielinePartsMode:"طريقة حساب أجزاء الفورمة",separateParts:"أجزاء منفصلة / الحساب الطبيعي",fullSet:"الفورمة شاملة الطقم كامل",
+materialPrinting:"الخامة والطباعة",paperType:"نوع الورق",printingType:"نوع الطباعة",printColors:"عدد ألوان الطباعة",lamination:"السلوفان",
+clientName:"اسم العميل",clientPhone:"رقم العميل",formeMargin:"هامش أمان حول الفورمة من كل ناحية (سم)",quantity:"الكمية",formCost:"تكلفة الفورمة",transport:"النقل",extras:"الإضافات",
+emboss:"بصمة — ٠.٨٠ جنيه للعلبة",spot:"سبوت يوفي — ٨٠٠ جنيه لكل ١٠٠٠",windowPlastic:"شباك بلاستيك — ١ جنيه للعلبة",
+handleType:"نوع اليد",bagGlue:"تلزيق الشنط — ٨٥٠ جنيه لكل ١٠٠٠",specialColors:"عدد الألوان المخصوصة",
+totalPrice:"السعر الإجمالي",finalClientPrice:"السعر النهائي للعميل",currency:"جنيه",copyPrice:"نسخ السعر",sendWhatsApp:"إرسال واتساب",calculate:"احسب السعر",
+breakdown:"تفاصيل الحساب",priceCopied:"تم نسخ السعر",notify:"التنبيهات تحتاج ربط Firebase لاحقًا",needsReview:"يحتاج مراجعة",
+fitWarn:"⚠️ المقاس لا يدخل في الفرخ المختار. مطلوب مراجعة يدوية.",prodWarn:"⚠️ وضع الإنتاج: يجب تأكيد الفرد أو عدد القطع قبل شراء الورق.",
+estimateNote:"وضع مبدئي: السعر النهائي للإنتاج يحتاج تأكيد الفورمة.",productionNote:"وضع الإنتاج: استخدم عدد قطع أو فورمة مؤكدة فقط.",
+paperCost:"تكلفة الورق",printingCost:"تكلفة الطباعة",platesCost:"تكلفة الزنكات",laminationCost:"تكلفة السلوفان",cuttingCost:"التكسير / القص",formLine:"الفورمة",extrasLine:"الإضافات",transportLine:"النقل",profitLine:"المكسب",pieceLine:"سعر القطعة",cardsCost:"تكلفة الكروت",specialColorsLine:"الألوان المخصوصة",butterSheets:"عدد شيتات ورق الزبدة",
+product:"المنتج",qty:"الكمية",finalPrice:"السعر النهائي هو",piecePrice:"سعر القطعة",clientMsgReady:"إذا حضرتك جاهز للبدء، من فضلك أرسل لنا الإيميل الخاص بك لتجهيز التعاقد الرسمي.",
+adminMode:"وضع الأدمن",employeeMode:"وضع الموظف",unlockAdmin:"فتح الأدمن",lockAdmin:"قفل الأدمن",confirmOrder:"تأكيد كشغل",monthlyReport:"تقرير الشهر",clearOrders:"مسح كل الأوردرات",deleteOrder:"مسح",ordersHistory:"سجل الأوردرات",searchOrders:"ابحث في الأوردرات...",adminOnlyReport:"تقرير الشهر يظهر للأدمن فقط.",confirmDeleteOrder:"تمسح الأوردر ده؟",dielinePreview:"معاينة الفورمة",sheetNesting:"المونتاج في الفرخ",orders:"الأوردرات",totalRevenue:"إجمالي المبيعات",totalExpenses:"إجمالي المصاريف",totalProfit:"إجمالي المكسب",orderSaved:"تم حفظ الشغل",adminRequired:"مطلوب وضع الأدمن",enterPin:"اكتب كود الأدمن",wrongPin:"كود غلط",ordersCleared:"تم مسح الأوردرات",noOrders:"لا يوجد أوردرات",costLineHidden:"تفاصيل التكلفة مخفية في وضع الموظف",
+products:{onePiece:"علبة قطعة واحدة",baseLid:"قاعدة وغطاء",drawer:"علبة درج",cosmetic:"علبة كوزماتكس / دواء",bagCoated:"شنطة كوشيه",bagKraft:"شنطة كرافت",sticker:"شيت استيكر",card:"كروت",butter:"ورق زبدة",sandwich:"كيس ساندوتش"},
+boxStyles:{onePieceSingle:"قطعة واحدة — جوانب ارتفاع مرة واحدة",onePieceDouble:"قطعة واحدة — جوانب دوبل / راجعة",onePiece:"قطعة واحدة / ميلر",baseLidNoWall:"قاعدة وغطاء بدون سور داخلي",baseLidWall:"قاعدة وغطاء بسور داخلي",drawer:"علبة درج / جراب",cosmeticTuck:"علبة بقفل عادي Tuck",cosmeticLock:"علبة بقفل سفلي أوتوماتيك",tray:"علبة صينية / Tray",pillow:"علبة مخدة / Pillow"},
+papers:{whiteTop:"وايت توب ٣٥٠ جرام",finnish:"فنلندي ٣٥٠ جرام",flandy:"فلاندي جاير",kraft:"كرافت بني",coatedBag:"كوشيه شنط ٢٠٠ جرام",sticker:"شيت استيكر ١٠٠×٧٠",butter:"شيت ورق زبدة ٦٠×٨٠"},
+prints:{quarter:"ربع فرخ",half:"نص فرخ",full:"فرخ كامل"},lams:{yes:"سلوفان مط / لامع — ٣.٥",no:"بدون سلوفان"},handles:{no:"بدون يد",kraft:"يد كرافت — ١ جنيه",rope:"يد دبار — ٢.٥ جنيه"},formTypes:{base:"قاعدة",cover:"غطاء",insert:"إنسيرت",divider:"فواصل",sleeve:"جراب / درج"}
+}
+};
+
+const R={
+  wastage:.10,
+  sheets:{main:{w:100,h:70},butter:{w:60,h:80}},
+  paper:{whiteTop:10.3,finnish:14,flandy:9,kraft:4.5,coatedBag:12,sticker:16,butter:0},
+  print:{quarter:{p:500,z:350},half:{p:850,z:500},full:{p:2000,z:650}},
+  creasing:400,creasingComplex:600,glueFlap:1.5,innerWall:1.5,tolerance:.5,
+  bagGlue:850,emboss:.8,spot:800,window:1,specialColor:600,
+  cards:{personal:{price:870},thankyou:{price:1300}},
+  profits:{boxBag:[[500,3500],[1000,4500],[2000,5000]],small:[[500,350],[1000,1200],[24000,4500]],butterPack:2000}
+};
+
+const PRODUCTS=["onePiece","baseLid","drawer","cosmetic","bagCoated","bagKraft","sticker","card","butter","sandwich"].map(id=>({
+  id,cat:["onePiece","baseLid","drawer","cosmetic"].includes(id)?"box":(["bagCoated","bagKraft"].includes(id)?"bag":id)
+}));
+
+let product="onePiece",mode="estimate",finalMsg="",currentLang="en",isAdmin=false,lastCalc={};
+
+function t(k){return I[currentLang][k]}
+function el(id){return document.getElementById(id)}
+function v(id){return Number(el(id)?.value)||0}
+function checked(id){return !!el(id)?.checked}
+function money(n){return Math.round(Number(n)||0).toLocaleString("en-US")}
+function ceil1000(q){return Math.max(1,Math.ceil((Number(q)||0)/1000))}
+function fitInfo(dw,dh,s=R.sheets.main){
+  if(dw<=0||dh<=0)return{units:0,orientation:"none",cols:0,rows:0};
+  let normal={units:Math.floor(s.w/dw)*Math.floor(s.h/dh),orientation:"normal",cols:Math.floor(s.w/dw),rows:Math.floor(s.h/dh)};
+  let rotated={units:Math.floor(s.w/dh)*Math.floor(s.h/dw),orientation:"rotated",cols:Math.floor(s.w/dh),rows:Math.floor(s.h/dw)};
+  return rotated.units>normal.units?rotated:normal;
+}
+function fitUnits(dw,dh,s=R.sheets.main){return fitInfo(dw,dh,s).units}
+function orientLabel(o){return o==="rotated"?t("rotatedFit"):t("normalFit")}
+function profit(type,qty){
+  if(type==="butter")return 2000;
+  let arr=(type==="box"||type==="bag")?R.profits.boxBag:R.profits.small,p=arr[0][1];
+  for(const [q,val] of arr){if(qty>=q)p=val}
+  return p;
+}
+function line(a,b){return `<div class="costLine"><span>${a}</span><strong>${money(b)} ${t("currency")}</strong></div>`}
+
+function dieline(style,L,W,H){
+  let gf=R.glueFlap,iw=R.innerWall,tol=R.tolerance;
+  switch(style){
+    case"onePieceSingle":
+      return{parts:1,w:L+(2*H)+tol,h:W+(2*H)+tol,complex:false};
+    case"onePieceDouble":
+      return{parts:1,w:L+(4*H)+tol,h:W+(4*H)+tol,complex:true};
+    case"onePiece":
+      return{parts:1,w:L+(2*W)+(2*H)+gf+tol,h:W+(4*H)+tol,complex:true};
+    case"baseLidNoWall":
+      return{parts:2,w:L+(2*H)+tol,h:W+(2*H)+tol,complex:false};
+    case"baseLidWall":
+      return{parts:2,w:L+(2*H)+(2*iw)+tol,h:W+(2*H)+(2*iw)+tol,complex:true};
+    case"drawer":
+      return{parts:2,w:(2*L)+(2*W)+gf+tol,h:W+(2*H)+tol,complex:true};
+    case"cosmeticTuck":
+      return{parts:1,w:(2*L)+(2*W)+gf+tol,h:H+(2*W)+tol,complex:false};
+    case"cosmeticLock":
+      return{parts:1,w:(2*L)+(2*W)+gf+tol,h:H+(2.5*W)+tol,complex:true};
+    case"tray":
+      return{parts:1,w:L+(2*H)+gf+tol,h:W+(2*H)+gf+tol,complex:false};
+    case"pillow":
+      return{parts:1,w:(2*L)+W+gf+tol,h:W+(1.5*H)+tol,complex:true};
+    default:
+      return{parts:1,w:L,h:W,complex:false};
+  }
+}
+
+function renderStaticText(){
+  document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));document.querySelectorAll("[data-i18n-placeholder]").forEach(n=>n.placeholder=t(n.dataset.i18nPlaceholder));
+  el("adminBtn").textContent=isAdmin?t("lockAdmin"):t("unlockAdmin");
+  el("confirmBtn").textContent=t("confirmOrder");
+  el("reportBtn").textContent=t("monthlyReport");
+  el("adminBadge").textContent=isAdmin?t("adminMode"):t("employeeMode");
+  el("adminBadge").classList.toggle("locked",!isAdmin);
+  el("boxStyle").innerHTML=Object.entries(I[currentLang].boxStyles).map(([k,val])=>`<option value="${k}">${val}</option>`).join("");
+  el("print").innerHTML=Object.entries(I[currentLang].prints).map(([k,val])=>`<option value="${k}">${val}</option>`).join("");
+  el("printColors").innerHTML=`<option value="4">4 ${currentLang==="ar"?"ألوان":"Colors"}</option><option value="3">3 ${currentLang==="ar"?"ألوان":"Colors"}</option><option value="2">2 ${currentLang==="ar"?"لون":"Colors"}</option><option value="1">1 ${currentLang==="ar"?"لون":"Color"}</option>`;
+  el("lamination").innerHTML=`<option value="3.5">${I[currentLang].lams.yes}</option><option value="0">${I[currentLang].lams.no}</option>`;
+  el("handleType").innerHTML=`<option value="0">${I[currentLang].handles.no}</option><option value="1">${I[currentLang].handles.kraft}</option><option value="2.5">${I[currentLang].handles.rope}</option>`;
+  el("dielinePartsMode").innerHTML=`<option value="separate">${t("separateParts")}</option><option value="fullSet">${t("fullSet")}</option>`;el("formCalcMode").innerHTML=`<option value="single">${t("singleForm")}</option><option value="separate">${t("separateForms")}</option>`;
+}
+
+function buildProducts(){
+  el("productGrid").innerHTML=PRODUCTS.map(p=>`<div class="productCard ${p.id===product?'active':''}" onclick="selectProduct('${p.id}')">${SVG[p.id]}<div class="pLabel">${I[currentLang].products[p.id]}</div></div>`).join("");
+}
+function paperOptions(){
+  let p=PRODUCTS.find(x=>x.id===product),opts=[];
+  if(p.cat==="bag")opts=product==="bagCoated"?["coatedBag"]:["kraft"];
+  else if(p.cat==="sticker")opts=["sticker"];
+  else if(p.cat==="butter")opts=["butter"];
+  else opts=["whiteTop","finnish","flandy","kraft"];
+  el("paper").innerHTML=opts.map(k=>`<option value="${R.paper[k]}">${I[currentLang].papers[k]} — ${R.paper[k]}</option>`).join("");
+}
+function setMode(m){
+  mode=m;
+  el("estimateBtn").classList.toggle("active",m==="estimate");
+  el("productionBtn").classList.toggle("active",m==="production");
+  if(m==="production")el("useOverride").checked=true;
+  calculate();
+}
+function selectProduct(id){
+  product=id;
+  buildProducts();
+  let p=PRODUCTS.find(x=>x.id===product);
+  el("boxStyleWrap").classList.toggle("hidden",p.cat!=="box");
+  el("dimensionsCard").classList.toggle("hidden",p.cat==="card");
+  el("materialCard").classList.toggle("hidden",p.cat==="card");
+  el("extrasCard").classList.toggle("hidden",p.cat==="card"||p.cat==="butter");
+  el("boxExtras").classList.toggle("hidden",p.cat!=="box");
+  el("bagExtras").classList.toggle("hidden",p.cat!=="bag");
+  paperOptions();
+  if(product==="bagKraft"){el("lamination").value="0";el("lamination").disabled=true}else{el("lamination").disabled=false}
+  calculate();
+}
+function formTypeDieline(){return null;}
+function getSeparateForms(){return null;}
+function toggleFormCalcMode(){return null;}
+function renderSeparateForms(){return null;}
+function autoCalcUnits(){
+  let p=PRODUCTS.find(x=>x.id===product),L=v("L"),W=v("W"),H=v("H"),dw=L,dh=W,parts=1,complex=false,s=R.sheets.main;
+  if(p.cat==="box"){
+    let d=dieline(el("boxStyle").value,L,W,H);
+    dw=d.w;dh=d.h;parts=d.parts;complex=d.complex;
+  }else if(p.cat==="bag"){
+    dw=2*L+2*W+3;dh=H+W+6;
+  }else if(p.cat==="sandwich"){
+    dw=L+3;dh=W+3;
+  }else if(p.cat==="butter"){
+    s=R.sheets.butter;
+  }
+  let singleFit=fitInfo(dw,dh,s);
+  let rawUnits=singleFit.units;
+  let completeUnits=rawUnits>0 ? rawUnits/Math.max(1,parts) : 0;
+  let displayUnits = completeUnits>0 ? (completeUnits % 1 === 0 ? completeUnits.toFixed(0) : completeUnits.toFixed(2)) : t("needsReview");
+  el("autoDieline").textContent=`${dw.toFixed(1)} × ${dh.toFixed(1)} cm ${parts>1?`× ${parts} parts`:''} — ${t("optimizedFit")}: ${orientLabel(singleFit.orientation)}`;
+  el("autoUnits").textContent=displayUnits;
+  let warn=el("autoWarning");
+  warn.classList.toggle("hidden",completeUnits>0&&mode==="estimate");
+  if(rawUnits<=0)warn.textContent=t("fitWarn");
+  else if(mode==="production")warn.textContent=t("prodWarn");
+  return{units:completeUnits,rawUnits:rawUnits,dw,dh,parts,complex,orientation:singleFit.orientation,cols:singleFit.cols,rows:singleFit.rows};
+}
+
+function drawVisual(details,units){
+  if(details && details.separate && details.forms){
+    let rows=details.forms.map(f=>`<div class="costLine"><span>${I[currentLang].formTypes[f.type]} ${f.dw.toFixed(1)}×${f.dh.toFixed(1)} cm</span><strong>${f.units||0} ${t("unitsPerSheet")} · ${orientLabel(f.orientation)}</strong></div>`).join("");
+    el("dielineSvg").innerHTML=`<div style="background:#fff;border-radius:18px;padding:12px">${rows}</div>`;
+    el("nestingSvg").innerHTML=`<svg viewBox="0 0 260 170" style="width:100%;max-height:210px"><rect width="260" height="170" rx="18" fill="#fff"/><text x="130" y="58" text-anchor="middle" font-size="13" fill="#14346B" font-weight="700">${t("separateResult")}</text><text x="130" y="92" text-anchor="middle" font-size="12" fill="#667085">${t("equivalentNote")}: ${(details.equivalentUnits||0).toFixed(2)}</text><text x="130" y="125" text-anchor="middle" font-size="12" fill="#667085">${t("totalSheets")} = sum of formes</text></svg>`;
+    return;
+  }
+  let dw=Math.max(10,details.dw||10),dh=Math.max(10,details.dh||10),parts=details.parts||1;
+  let sw=240,sh=150,scale=Math.min(sw/dw,sh/dh),rw=dw*scale,rh=dh*scale,x=(260-rw)/2,y=(170-rh)/2;
+  let extra=parts>1?`<rect x="${x+12}" y="${y+12}" width="${rw}" height="${rh}" rx="8" fill="none" stroke="#E4C16A" stroke-width="3" stroke-dasharray="7 5"/>`:"";
+  el("dielineSvg").innerHTML=`<svg viewBox="0 0 260 170" style="width:100%;max-height:210px"><rect width="260" height="170" rx="18" fill="#fff"/><rect x="${x}" y="${y}" width="${rw}" height="${rh}" rx="8" fill="#3B66A8" opacity=".18" stroke="#14346B" stroke-width="3"/><line x1="${x}" y1="${y+rh/2}" x2="${x+rw}" y2="${y+rh/2}" stroke="#14346B" stroke-dasharray="5 5"/><line x1="${x+rw/2}" y1="${y}" x2="${x+rw/2}" y2="${y+rh}" stroke="#14346B" stroke-dasharray="5 5"/>${extra}<text x="130" y="158" text-anchor="middle" font-size="11" fill="#14346B">${dw.toFixed(1)} × ${dh.toFixed(1)} cm ${parts>1?"× "+parts:""}</text></svg>`;
+  let safeUnits=Math.max(1,Math.floor(Number(units)||1)),cols=Math.max(1,Math.ceil(Math.sqrt(safeUnits))),rows=Math.max(1,Math.ceil(safeUnits/cols)),cw=220/cols,ch=130/rows,cells="";
+  for(let i=0;i<safeUnits;i++){let c=i%cols,r=Math.floor(i/cols);cells+=`<rect x="${20+c*cw+2}" y="${20+r*ch+2}" width="${cw-4}" height="${ch-4}" rx="4" fill="#3B66A8" opacity=".28" stroke="#14346B"/>`}
+  el("nestingSvg").innerHTML=`<svg viewBox="0 0 260 170" style="width:100%;max-height:210px"><rect width="260" height="170" rx="18" fill="#fff"/><rect x="20" y="20" width="220" height="130" rx="10" fill="#F8FAFC" stroke="#14346B" stroke-width="3"/><text x="130" y="15" text-anchor="middle" font-size="10" fill="#14346B">Sheet</text>${cells}<text x="130" y="165" text-anchor="middle" font-size="11" fill="#14346B">${safeUnits} products / sheet</text></svg>`;
+}
+
+function calculate(){
+  let p=PRODUCTS.find(x=>x.id===product),qty=v("qty"),breakdown="",total=0,totalProfit=0,details=autoCalcUnits();
+  if(qty<=0)return;
+  let transport=v("transport");
+  if(p.cat==="card"){
+    let cost=R.cards.personal.price*ceil1000(qty),prof=profit("card",qty),special=v("specialColors")*R.specialColor;
+    total=cost+special+transport+prof;totalProfit=prof;
+    breakdown+=line(t("cardsCost"),cost)+(special?line(t("specialColorsLine"),special):"")+line(t("transportLine"),transport)+line(t("profitLine"),prof);
+  }else{
+    let units=checked("useOverride")?v("manualUnits"):details.units;if(!units)units=1;
+    let partMultiplier=(checked("useOverride")&&el("dielinePartsMode").value==="separate")?(details.parts||1):1;
+    let productionSheets=(qty/units)*partMultiplier;
+    let sheets=(qty*(1+R.wastage)/units)*partMultiplier;
+    let formsBreakdown="";
+    let paper=sheets*v("paper"),m=ceil1000(qty),pr=R.print[el("print").value],colorFactor=(v("printColors")||4)/4;
+    let printing=pr.p*m*colorFactor,plates=pr.z*colorFactor,lam=(p.cat==="bag"&&product==="bagKraft")?0:sheets*v("lamination");
+    let creas=(details.complex?R.creasingComplex:R.creasing)*m,form=v("formCost"),prof=profit(p.cat,qty),extras=0;
+    if(p.cat==="box"){if(checked("emboss"))extras+=qty*R.emboss;if(checked("spot"))extras+=m*R.spot;if(checked("windowPlastic"))extras+=qty*R.window}
+    if(p.cat==="bag"){if(checked("bagGlue"))extras+=m*R.bagGlue;extras+=qty*v("handleType")}
+    extras+=v("specialColors")*R.specialColor;
+    if(p.cat==="butter"){prof=Math.max(2000,productionSheets*3.36);form=0;creas=0}
+    total=paper+printing+plates+lam+creas+form+transport+extras+prof;totalProfit=prof;
+    breakdown+=(p.cat==="butter"?line(t("butterSheets"),productionSheets.toFixed(2)):"")+line(t("paperCost"),paper)+line(t("printingCost"),printing)+line(t("platesCost"),plates)+(lam?line(t("laminationCost"),lam):"")+(creas?line(t("cuttingCost"),creas):"")+(form?line(t("formLine"),form):"")+(extras?line(t("extrasLine"),extras):"")+line(t("transportLine"),transport)+line(t("profitLine"),prof);
+  }
+  let per=total/qty;
+  let unitsForVisual=(checked("useOverride")?v("manualUnits"):details.units)||1;
+  lastCalc={total:total,profit:totalProfit,expenses:total-totalProfit,per:per,details:details,units:unitsForVisual};
+  drawVisual(details,unitsForVisual);
+  el("priceNumber").textContent=money(total);
+  let visibleBreakdown=isAdmin?breakdown:`<div class="costLine"><span>${t("costLineHidden")}</span><strong>—</strong></div>`;
+  el("breakdownLines").innerHTML=visibleBreakdown+line(t("pieceLine"),per.toFixed(2));
+  el("priceNote").textContent=mode==="production"?t("productionNote"):t("estimateNote");
+  renderReport(false);
+  finalMsg=`${t("product")}: ${I[currentLang].products[product]}\n${t("qty")}: ${qty.toLocaleString("en-US")}\n\n${t("finalPrice")}: ${money(total)} ${t("currency")}\n${t("piecePrice")}: ${per.toFixed(2)} ${t("currency")}\n\n${t("clientMsgReady")}`;
+}
+
+function getOrders(){try{return JSON.parse(localStorage.getItem("mtOrdersV74Fixed")||"[]")}catch(e){return[]}}
+function saveOrders(o){localStorage.setItem("mtOrdersV74Fixed",JSON.stringify(o))}
+function toggleAdmin(){
+  if(isAdmin){isAdmin=false;renderStaticText();calculate();return}
+  let pin=prompt(t("enterPin"));
+  if(pin==="1234"){isAdmin=true;renderStaticText();calculate();renderReport()}
+  else if(pin!==null){alert(t("wrongPin"))}
+}
+function confirmOrder(){
+  calculate();
+  let orders=getOrders();
+  let item={date:new Date().toISOString().slice(0,10),clientName:el("clientName").value||"",clientPhone:el("clientPhone").value||"",product:I[currentLang].products[product],qty:v("qty"),revenue:lastCalc.total||0,expenses:lastCalc.expenses||0,profit:lastCalc.profit||0,mode:mode};
+  orders.push(item);saveOrders(orders);alert(t("orderSaved"));renderReport();
+}
+function toggleReport(){if(!isAdmin){alert(t("adminRequired"));return}el("reportCard").classList.toggle("hidden");renderReport()}
+function clearOrders(){
+  if(!isAdmin){alert(t("adminRequired"));return}
+  if(confirm(currentLang==="ar"?"متأكد تمسح كل الأوردرات؟":"Clear all orders?")){saveOrders([]);renderReport();alert(t("ordersCleared"))}
+}
+function renderReport(){
+  if(!el("reportCard"))return;
+  let orders=getOrders(),rev=0,exp=0,prof=0;
+  orders.forEach(x=>{rev+=Number(x.revenue)||0;exp+=Number(x.expenses)||0;prof+=Number(x.profit)||0});
+  el("repRevenue").textContent=isAdmin?money(rev)+" "+t("currency"):"—";
+  el("repExpenses").textContent=isAdmin?money(exp)+" "+t("currency"):"—";
+  el("repProfit").textContent=isAdmin?money(prof)+" "+t("currency"):"—";
+  renderOrders();
+}
+function renderOrders(){
+  let target=el("ordersListPublic"); if(!target)return;
+  let q=(el("orderSearch")?.value||"").toLowerCase();
+  let orders=getOrders();
+  let filtered=orders.map((x,i)=>({...x,_i:i})).filter(x=>{
+    let hay=[x.clientName,x.clientPhone,x.product,x.date,x.mode,x.qty].join(" ").toLowerCase();
+    return hay.includes(q);
+  });
+  if(!filtered.length){target.innerHTML="<p>"+t("noOrders")+"</p>";return}
+  target.innerHTML=`<table class="orderTable"><thead><tr><th>Date</th><th>${t("clientName")}</th><th>${t("clientPhone")}</th><th>${t("product")}</th><th>${t("qty")}</th><th>${t("totalPrice")}</th><th></th></tr></thead><tbody>${filtered.map(x=>`<tr><td>${x.date}</td><td>${x.clientName||"-"}</td><td>${x.clientPhone||"-"}</td><td>${x.product}</td><td>${x.qty}</td><td>${money(x.revenue)} ${t("currency")}</td><td>${isAdmin?`<button class="deleteBtn" onclick="deleteOrder(${x._i})">${t("deleteOrder")}</button>`:""}</td></tr>`).join("")}</tbody></table>`;
+}
+function deleteOrder(index){
+  if(!isAdmin){alert(t("adminRequired"));return}
+  if(!confirm(t("confirmDeleteOrder")))return;
+  let orders=getOrders(); orders.splice(index,1); saveOrders(orders); renderReport();
+}
+function copyPrice(){calculate();navigator.clipboard.writeText(finalMsg).then(()=>alert(t("priceCopied"))).catch(()=>alert(t("priceCopied")))}
+function sendWhatsApp(){calculate();window.open("https://wa.me/?text="+encodeURIComponent(finalMsg),"_blank")}
+function notifyInfo(){alert(t("notify"))}
+function setLang(l){
+  currentLang=l;document.documentElement.lang=l;document.documentElement.dir=l==="ar"?"rtl":"ltr";
+  let old={style:el("boxStyle")?.value||"onePiece",print:el("print")?.value||"quarter",colors:el("printColors")?.value||"4",lam:el("lamination")?.value||"3.5",handle:el("handleType")?.value||"0",partsMode:el("dielinePartsMode")?.value||"separate"};
+  renderStaticText();
+  el("boxStyle").value=old.style;el("print").value=old.print;el("printColors").value=old.colors;el("lamination").value=old.lam;el("handleType").value=old.handle;el("dielinePartsMode").value=old.partsMode;
+  el("enBtn").classList.toggle("active",l==="en");el("arBtn").classList.toggle("active",l==="ar");
+  buildProducts();paperOptions();calculate();
+}
+
+["boxStyle","L","W","H","paper","print","printColors","lamination","qty","formCost","transport","emboss","spot","windowPlastic","bagGlue","handleType","specialColors","useOverride","manualUnits","dielinePartsMode","clientName","clientPhone","formCalcMode","formsCount"].forEach(id=>{
+  document.addEventListener("input",e=>{if(e.target&&e.target.id===id)calculate()});
+  document.addEventListener("change",e=>{if(e.target&&e.target.id===id)calculate()});
+});
+
+renderStaticText();
+buildProducts();
+paperOptions();
+selectProduct("onePiece");
+setLang("en");
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "MT Pricing V8.1 Clean",
+  "short_name": "MT Pricing",
+  "start_url": "./index.html?v=8-1",
+  "display": "standalone",
+  "background_color": "#F3F6FB",
+  "theme_color": "#3B66A8",
+  "orientation": "portrait"
+}
