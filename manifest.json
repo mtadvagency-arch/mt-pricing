@@ -1,0 +1,9 @@
+{
+  "name": "MT Pricing V7.5 Pro",
+  "short_name": "MT Pricing",
+  "start_url": "./index.html?v=7-5",
+  "display": "standalone",
+  "background_color": "#F3F6FB",
+  "theme_color": "#3B66A8",
+  "orientation": "portrait"
+}
